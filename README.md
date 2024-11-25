@@ -64,7 +64,7 @@ In advanced stages, the focus shifts to improving query performance. Some optimi
   
 ---
 
-## 15 Practice Questions
+## Practice Questions
 1. Retrieve the names of all tracks that have more than 1 billion streams.
 ```sql
 SELECT DISTINCT track, stream
@@ -99,7 +99,7 @@ FROM spotify
 GROUP BY artist
 ORDER BY 2;
 ```
-### Medium Level
+
 6. Calculate the average danceability of tracks in each album.
 ```sql
 SELECT album, AVG(danceability) as AVG_danceability 
@@ -107,6 +107,7 @@ FROM spotify
 GROUP BY album 
 ORDER BY 2 desc;
 ```
+
 7. Find the top 5 tracks with the highest energy values.
 ```sql
 SELECT DISTINCT track, MAX(energy) 
@@ -115,6 +116,7 @@ GROUP BY 1
 ORDER BY 2 desc
 LIMIT 5; 
 ```
+
 8. List all tracks along with their views and likes where `official_video = TRUE`.
 ```sql
 SELECT track, SUM(views) as total_views, SUM(likes) as total_likes
@@ -123,6 +125,7 @@ WHERE official_video = true
 GROUP BY 1 
 ORDER BY 2 DESC;
 ```
+
 9. For each album, calculate the total views of all associated tracks.
 ```sql
 SELECT album, track, SUM(views) as total_views
@@ -130,6 +133,7 @@ FROM spotify
 GROUP BY 1, 2
 ORDER BY 3 DESC;
 ```
+
 10. Retrieve the track names that have been streamed on Spotify more than YouTube.
 ```sql
 SELECT * FROM
@@ -143,25 +147,45 @@ GROUP BY 1
 WHERE 
 	streamed_on_spotify > streamed_on_youtube; 
 ```
-### Advanced Level
-1. Find the top 3 most-viewed tracks for each artist using window functions.
-2. Write a query to find tracks where the liveness score is above the average.
-3. **Use a `WITH` clause to calculate the difference between the highest and lowest energy values for tracks in each album.**
+
+11. Find the top 3 most-viewed tracks for each artist using window functions.
 ```sql
-WITH cte
+WITH artist_ranking 
 AS
 (SELECT 
+	artist,
+	track,
+	SUM(views) as total_views,
+	DENSE_RANK() OVER(PARTITION BY artist ORDER BY SUM(views) DESC) as rank
+FROM spotify
+GROUP BY 1, 2
+ORDER BY 1, 3 DESC
+)
+SELECT * FROM artist_ranking 
+WHERE rank <= 3;
+```
+12. Write a query to find tracks where the liveness score is above the average.
+```sql
+SELECT * FROM spotify
+WHERE liveness > (SELECT AVG(liveness) FROM spotify)
+```
+
+13. Use a WITH clause to calculate the difference between the highest and lowest energy values for tracks in each album 
+```sql
+WITH t1
+AS
+(SELECT
 	album,
 	MAX(energy) as highest_energy,
-	MIN(energy) as lowest_energery
+	MIN(energy) as lowest_energy
 FROM spotify
 GROUP BY 1
 )
 SELECT 
 	album,
-	highest_energy - lowest_energery as energy_diff
-FROM cte
-ORDER BY 2 DESC
+	highest_energy - lowest_energy as energy_diff
+FROM t1
+ORDER BY 2 desc
 ```
    
 5. Find tracks where the energy-to-liveness ratio is greater than 1.2.
