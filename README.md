@@ -91,7 +91,7 @@ WHERE licensed = true;
 SELECT * 
 FROM spotify 
 WHERE album_type = 'single';
-
+```
 5. Count the total number of tracks by each artist.
 ```sql
 SELECT artist, COUNT(*) as total_tracks 
