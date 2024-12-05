@@ -37,34 +37,34 @@ CREATE TABLE spotify (
 ```
 
 ## Exploratory Data Analysis
-1. Retrieve the names of all tracks that have more than 1 billion streams.
+1. Which tracks have more than 1 billion streams?
 ```sql
 SELECT DISTINCT track, stream
 FROM spotify 
 WHERE stream > 1000000000;
 ```
 
-2. List all albums along with their respective artists.
+2. What are all the albums in the dataset along with their respective artists?
 ```sql
 SELECT DISTINCT album, artist
 FROM spotify 
 ORDER BY artist;
 ```
 
-3. Get the total number of comments for tracks where `licensed = TRUE`.
+3. What are the total number of comments for licenced tracks? (licensed = TRUE)
 ```sql
 SELECT SUM(comments) as total_comments
 FROM spotify 
 WHERE licensed = true;
 ```
  
-4. Find all tracks that belong to the album type `single`.
+4. Which tracks in the dataset are singles?
 ```sql
 SELECT * 
 FROM spotify 
 WHERE album_type = 'single';
 ```
-5. Count the total number of tracks by each artist.
+5. What are the total number of tracks for each artist?
 ```sql
 SELECT artist, COUNT(*) as total_tracks 
 FROM spotify 
@@ -72,7 +72,7 @@ GROUP BY artist
 ORDER BY 2;
 ```
 
-6. Calculate the average danceability of tracks in each album.
+6. What is the average danceability of tracks in each album?
 ```sql
 SELECT album, AVG(danceability) as AVG_danceability 
 FROM spotify 
@@ -80,7 +80,7 @@ GROUP BY album
 ORDER BY 2 desc;
 ```
 
-7. Find the top 5 tracks with the highest energy values.
+7. What are the top 5 tracks with the highest energy values?
 ```sql
 SELECT DISTINCT track, MAX(energy) 
 FROM spotify 
@@ -89,7 +89,7 @@ ORDER BY 2 desc
 LIMIT 5; 
 ```
 
-8. List all tracks along with their views and likes where `official_video = TRUE`.
+8. What are all the tracks with their views and likes where the video was official? (official_video = TRUE)
 ```sql
 SELECT track, SUM(views) as total_views, SUM(likes) as total_likes
 FROM spotify 
@@ -98,7 +98,7 @@ GROUP BY 1
 ORDER BY 2 DESC;
 ```
 
-9. For each album, calculate the total views of all associated tracks.
+9. What are the total views for each album for all the associated tracks?
 ```sql
 SELECT album, track, SUM(views) as total_views
 FROM spotify
@@ -106,7 +106,7 @@ GROUP BY 1, 2
 ORDER BY 3 DESC;
 ```
 
-10. Retrieve the track names that have been streamed on Spotify more than YouTube.
+10. What are the track names for tracks that have been streamed on Spotify more than YouTube?
 ```sql
 SELECT * FROM
 (SELECT 
@@ -120,7 +120,7 @@ WHERE
 	streamed_on_spotify > streamed_on_youtube; 
 ```
 
-11. Find the top 3 most-viewed tracks for each artist using window functions.
+11. What are the top 3 most-viewed tracks for each artist? (Using a window function)
 ```sql
 WITH artist_ranking 
 AS
@@ -136,13 +136,14 @@ ORDER BY 1, 3 DESC
 SELECT * FROM artist_ranking 
 WHERE rank <= 3;
 ```
-12. Write a query to find tracks where the liveness score is above the average.
+
+12. What are the tracks that have a liveness score is above average? 
 ```sql
 SELECT * FROM spotify
 WHERE liveness > (SELECT AVG(liveness) FROM spotify)
 ```
 
-13. Use a WITH clause to calculate the difference between the highest and lowest energy values for tracks in each album 
+13. What is the difference between the highest and lowest energy values for tracks in each album? (Calculated using a WITH clause)
 ```sql
 WITH t1
 AS
@@ -155,9 +156,9 @@ GROUP BY 1
 )
 SELECT 
 	album,
-	highest_energy - lowest_energy as energy_diff
+	ROUND(CAST(highest_energy - lowest_energy AS numeric), 2) AS energy_diff
 FROM t1
-ORDER BY 2 desc
+ORDER BY 2 DESC
 ```
 
 ## Technology Stack
