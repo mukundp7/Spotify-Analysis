@@ -3,7 +3,7 @@
 ![Spotify Logo](https://github.com/najirh/najirh-Spotify-Data-Analysis-using-SQL/blob/main/spotify_logo.jpg)
 
 ## Overview
-This project involved using SQL to perform exploratory data analysis on a Spotify dataset. The data set included various features of tracks that were uploaded on the popular music streaming platform. The goal of this project was to gain insights from the data such as popularity of the songs, which artists are most commonly featured on the platform, and which songs had the highest danceability ratings. 
+This project involved using SQL to perform exploratory data analysis on a Spotify dataset. The data set included various features of tracks that were uploaded on the popular music streaming platform. The goal of this project was to gain insights from the data such as popularity of the songs, which artists are most commonly featured on the platform, and which songs had the highest danceability scores. 
 
 ## Creating The Table To Store The Dataset
 ```sql
